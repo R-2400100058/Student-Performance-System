@@ -1,10 +1,496 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+<style>
+    .dashboard-wrapper {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .dashboard-header {
+        margin-bottom: 2rem;
+        padding: 2rem;
+        background: linear-gradient(135deg, rgba(139, 111, 71, 0.1) 0%, rgba(156, 175, 136, 0.1) 100%);
+        border-radius: 20px;
+        border: 1px solid rgba(139, 111, 71, 0.2);
+        animation: slideDown 0.8s ease-out;
+    }
+
+    .dashboard-header h1 {
+        font-size: 2.2rem;
+        color: #8B6F47;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+    }
+
+    .dashboard-header p {
+        color: #5D5047;
+        font-size: 0.95rem;
+    }
+
+    .header-meta {
+        display: flex;
+        gap: 2rem;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        color: #5D5047;
+        font-size: 0.9rem;
+    }
+
+    .meta-icon {
+        font-size: 1.5rem;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 1.8rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(139, 111, 71, 0.1);
+        border: 1px solid rgba(139, 111, 71, 0.1);
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        position: relative;
+        overflow: hidden;
+        animation: slideUp 0.8s ease-out backwards;
+    }
+
+    .stat-card:nth-child(1) { animation-delay: 0.1s; }
+    .stat-card:nth-child(2) { animation-delay: 0.2s; }
+    .stat-card:nth-child(3) { animation-delay: 0.3s; }
+    .stat-card:nth-child(4) { animation-delay: 0.4s; }
+    .stat-card:nth-child(5) { animation-delay: 0.5s; }
+    .stat-card:nth-child(6) { animation-delay: 0.6s; }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #C84B31, #C9A876);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
+    }
+
+    .stat-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(139, 111, 71, 0.15);
+        border-color: #C9A876;
+    }
+
+    .stat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .stat-label {
+        color: #5D5047;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .stat-icon {
+        font-size: 1.8rem;
+    }
+
+    .stat-number {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #8B6F47;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-change {
+        font-size: 0.85rem;
+        color: #9CAF88;
+        font-weight: 600;
+    }
+
+    .stat-change.positive {
+        color: #9CAF88;
+    }
+
+    .stat-change.negative {
+        color: #C84B31;
+    }
+
+    .charts-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .chart-card {
+        background: white;
+        padding: 1.8rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(139, 111, 71, 0.1);
+        border: 1px solid rgba(139, 111, 71, 0.1);
+        animation: slideUp 0.8s ease-out backwards;
+    }
+
+    .chart-card:nth-child(1) { animation-delay: 0.5s; }
+    .chart-card:nth-child(2) { animation-delay: 0.6s; }
+    .chart-card:nth-child(3) { animation-delay: 0.7s; }
+
+    .chart-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(139, 111, 71, 0.15);
+    }
+
+    .chart-title {
+        color: #8B6F47;
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .chart-placeholder {
+        width: 100%;
+        height: 200px;
+        background: linear-gradient(135deg, rgba(200, 75, 49, 0.05) 0%, rgba(156, 175, 136, 0.05) 100%);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #A89A8F;
+        font-size: 0.9rem;
+        border: 2px dashed rgba(139, 111, 71, 0.2);
+    }
+
+    .table-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(139, 111, 71, 0.1);
+        border: 1px solid rgba(139, 111, 71, 0.1);
+        overflow: hidden;
+        animation: slideUp 0.8s ease-out 0.8s both;
+    }
+
+    .table-section h3 {
+        color: #8B6F47;
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: linear-gradient(135deg, rgba(139, 111, 71, 0.08) 0%, rgba(156, 175, 136, 0.08) 100%);
+        padding: 1rem;
+        text-align: left;
+        color: #8B6F47;
+        font-weight: 700;
+        border-bottom: 2px solid rgba(139, 111, 71, 0.1);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    td {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(139, 111, 71, 0.08);
+        color: #5D5047;
+        font-size: 0.9rem;
+    }
+
+    tr:hover {
+        background: rgba(139, 111, 71, 0.03);
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-active {
+        background: rgba(156, 175, 136, 0.2);
+        color: #7A8B6A;
+    }
+
+    .badge-inactive {
+        background: rgba(200, 75, 49, 0.2);
+        color: #B85C3C;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 2rem;
+        color: #5D5047;
+        font-style: italic;
+    }
+
+    .subject-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .subject-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background: rgba(139, 111, 71, 0.05);
+        border-radius: 10px;
+        border: 1px solid rgba(139, 111, 71, 0.1);
+    }
+
+    .subject-name {
+        font-weight: 600;
+        color: #8B6F47;
+    }
+
+    .subject-avg {
+        font-weight: 700;
+        color: #C84B31;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .stats-grid,
+        .charts-section {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .header-meta {
+            gap: 1rem;
+        }
+
+        table {
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            padding: 0.8rem 0.5rem;
+        }
+    }
+</style>
+
+<div class="dashboard-wrapper">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <h1>👨‍💼 Admin Dashboard</h1>
+        <p>Complete overview of student performance analytics and system management</p>
+        <div class="header-meta">
+            <div class="meta-item">
+                <span class="meta-icon">📅</span>
+                <span>Last updated: Today</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-icon">👥</span>
+                <span>Total Users: {{ total_users }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-header">
+                <div>
+                    <div class="stat-label">Total Students</div>
+                    <div class="stat-number">{{ total_students }}</div>
+                </div>
+                <div class="stat-icon">👨‍🎓</div>
+            </div>
+            <div class="stat-change positive">Active</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <div>
+                    <div class="stat-label">Total Teachers</div>
+                    <div class="stat-number">{{ total_teachers }}</div>
+                </div>
+                <div class="stat-icon">👨‍🏫</div>
+            </div>
+            <div class="stat-change positive">Active</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <div>
+                    <div class="stat-label">Total Subjects</div>
+                    <div class="stat-number">{{ total_subjects }}</div>
+                </div>
+                <div class="stat-icon">📚</div>
+            </div>
+            <div class="stat-change positive">Active</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <div>
+                    <div class="stat-label">Avg. Performance</div>
+                    <div class="stat-number">{{ avg_student_score|floatformat:1 }}%</div>
+                </div>
+                <div class="stat-icon">📊</div>
+            </div>
+            <div class="stat-change positive">Good</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <div>
+                    <div class="stat-label">Total Marks</div>
+                    <div class="stat-number">{{ total_marks }}</div>
+                </div>
+                <div class="stat-icon">📝</div>
+            </div>
+            <div class="stat-change positive">Updated</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <div>
+                    <div class="stat-label">System Health</div>
+                    <div class="stat-number">99.8%</div>
+                </div>
+                <div class="stat-icon">⚡</div>
+            </div>
+            <div class="stat-change positive">Excellent</div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+        <div class="chart-card">
+            <div class="chart-title">📈 Student Performance Trend</div>
+            <div class="chart-placeholder">
+                <span>Interactive Chart Area</span>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <div class="chart-title">🎯 User Distribution</div>
+            <div class="chart-placeholder">
+                <span>Interactive Chart Area</span>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <div class="chart-title">📉 System Analytics</div>
+            <div class="chart-placeholder">
+                <span>Interactive Chart Area</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Subjects Section -->
+    <div class="table-section">
+        <h3>📚 Top Performing Subjects</h3>
+        {% if subject_performance %}
+        <div class="subject-list">
+            {% for subject in subject_performance %}
+            <div class="subject-item">
+                <span class="subject-name">{{ subject.name }}</span>
+                <span class="subject-avg">{{ subject.average }}/100</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <div class="no-data">
+                <p>No subject data available yet.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Recent Marks Table -->
+    <div class="table-section" style="margin-top: 2rem;">
+        <h3>📋 Recent Student Marks</h3>
+        {% if recent_marks %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mark in recent_marks %}
+                <tr>
+                    <td>{{ mark.student }}</td>
+                    <td>{{ mark.subject }}</td>
+                    <td><strong>{{ mark.marks }}/100</strong></td>
+                    <td>{{ mark.date }}</td>
+                    <td>
+                        {% if mark.marks >= 70 %}
+                            <span class="status-badge badge-active">Good</span>
+                        {% else %}
+                            <span class="status-badge badge-inactive">Needs Work</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="no-data">
+                <p>No marks recorded yet.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
