@@ -19,7 +19,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'accounts',
     'analytics_app',
 ]
@@ -79,8 +78,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 
+
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'login'
+
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
