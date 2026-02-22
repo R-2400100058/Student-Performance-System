@@ -2,6 +2,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('accounts.urls')),  # Connects Member 1 URLs
+    path('admin/', admin.site.urls),  # MUST be first
+    path('', include('accounts.urls')),
 ]

@@ -1,6 +1,489 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Teacher Dashboard</h2>
-<p>Basic structure for teacher dashboard</p>
+<style>
+    .student-dashboard {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .student-header {
+        margin-bottom: 2rem;
+        padding: 2rem;
+        background: linear-gradient(135deg, rgba(156, 175, 136, 0.1) 0%, rgba(212, 165, 116, 0.1) 100%);
+        border-radius: 20px;
+        border: 1px solid rgba(156, 175, 136, 0.2);
+        animation: slideDown 0.8s ease-out;
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+
+    .header-info h1 {
+        font-size: 2.2rem;
+        color: #8B6F47;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+    }
+
+    .header-info p {
+        color: #5D5047;
+        font-size: 0.95rem;
+    }
+
+    .header-stats {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .header-stat {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .header-stat-label {
+        color: #5D5047;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .header-stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #C84B31;
+    }
+
+    .overall-score {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(139, 111, 71, 0.1);
+        border: 1px solid rgba(139, 111, 71, 0.1);
+        text-align: center;
+        animation: slideUp 0.8s ease-out 0.1s both;
+    }
+
+    .score-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: conic-gradient(#C84B31 0deg, #C84B31 331deg, #E8DCC8 331deg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        position: relative;
+        box-shadow: 0 8px 20px rgba(200, 75, 49, 0.2);
+    }
+
+    .score-circle::before {
+        content: '';
+        position: absolute;
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: white;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
+
+    .score-text {
+        position: relative;
+        z-index: 2;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #C84B31;
+    }
+
+    .score-label {
+        color: #5D5047;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+
+    .subject-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .subject-card {
+        background: white;
+        padding: 1.8rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(139, 111, 71, 0.1);
+        border: 1px solid rgba(139, 111, 71, 0.1);
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        position: relative;
+        overflow: hidden;
+        animation: slideUp 0.8s ease-out backwards;
+    }
+
+    .subject-card:nth-child(1) { animation-delay: 0.2s; }
+    .subject-card:nth-child(2) { animation-delay: 0.3s; }
+    .subject-card:nth-child(3) { animation-delay: 0.4s; }
+    .subject-card:nth-child(4) { animation-delay: 0.5s; }
+
+    .subject-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #C84B31, #C9A876);
+    }
+
+    .subject-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(139, 111, 71, 0.15);
+        border-color: #C9A876;
+    }
+
+    .subject-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.2rem;
+    }
+
+    .subject-name {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #8B6F47;
+    }
+
+    .subject-score {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #C84B31;
+    }
+
+    .subject-info {
+        font-size: 0.85rem;
+        color: #5D5047;
+        margin-bottom: 0.8rem;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: rgba(139, 111, 71, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 1rem;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #9CAF88, #C84B31);
+        border-radius: 10px;
+        animation: expandWidth 1.2s ease-out forwards;
+    }
+
+    .achievements-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(139, 111, 71, 0.1);
+        border: 1px solid rgba(139, 111, 71, 0.1);
+        animation: slideUp 0.8s ease-out 0.6s both;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
+        color: #8B6F47;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .achievements-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .achievement {
+        text-align: center;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, rgba(156, 175, 136, 0.1) 0%, rgba(200, 75, 49, 0.05) 100%);
+        border-radius: 15px;
+        border: 1px solid rgba(139, 111, 71, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .achievement:hover {
+        transform: scale(1.05);
+        background: linear-gradient(135deg, rgba(156, 175, 136, 0.2) 0%, rgba(200, 75, 49, 0.1) 100%);
+    }
+
+    .achievement-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.8rem;
+        animation: bounce 2s ease-in-out infinite;
+    }
+
+    .achievement-name {
+        font-weight: 700;
+        color: #8B6F47;
+        font-size: 0.9rem;
+    }
+
+    .suggestions-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(139, 111, 71, 0.1);
+        border: 1px solid rgba(139, 111, 71, 0.1);
+        animation: slideUp 0.8s ease-out 0.7s both;
+        margin-top: 2rem;
+    }
+
+    .suggestion-item {
+        padding: 1.2rem;
+        background: linear-gradient(135deg, rgba(200, 75, 49, 0.05) 0%, rgba(212, 165, 116, 0.05) 100%);
+        border-left: 4px solid #C84B31;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .suggestion-item:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 12px rgba(139, 111, 71, 0.1);
+    }
+
+    .suggestion-title {
+        font-weight: 700;
+        color: #8B6F47;
+        margin-bottom: 0.4rem;
+    }
+
+    .suggestion-text {
+        color: #5D5047;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 2rem;
+        color: #5D5047;
+        font-style: italic;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes expandWidth {
+        from {
+            width: 0%;
+        }
+        to {
+            width: var(--width);
+        }
+    }
+
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .header-content {
+            flex-direction: column;
+        }
+
+        .student-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .subject-cards {
+            grid-template-columns: 1fr;
+        }
+
+        .achievements-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style>
+
+<div class="student-dashboard">
+    <!-- Student Header -->
+    <div class="student-header">
+        <div class="header-content">
+            <div class="header-info">
+                <h1>👨‍🎓 Welcome, {{ user.first_name|default:"Student" }}!</h1>
+                <p>Track your academic progress and achievements</p>
+                <div class="header-stats">
+                    <div class="header-stat">
+                        <span class="header-stat-label">Total Marks</span>
+                        <span class="header-stat-value">{{ total_marks }}</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="header-stat-label">Attendance</span>
+                        <span class="header-stat-value">{{ attendance_percentage|floatformat:1 }}%</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="header-stat-label">Average Score</span>
+                        <span class="header-stat-value">{{ overall_average|floatformat:1 }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overall-score">
+                <div class="score-circle">
+                    <span class="score-text">{{ overall_average|floatformat:0 }}</span>
+                </div>
+                <div class="score-label">Overall Performance</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subject Performance -->
+    <h2 class="section-title">📚 Subject Performance</h2>
+    <div class="subject-cards">
+        {% if subject_performance %}
+            {% for subject in subject_performance %}
+            <div class="subject-card">
+                <div class="subject-header">
+                    <div class="subject-name">{{ subject.name }}</div>
+                    <div class="subject-score">{{ subject.average }}/100</div>
+                </div>
+                <div class="subject-info">Your average in this subject</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ subject.percentage }}%"></div>
+                </div>
+                <small style="color: #5D5047;">Performance: {{ subject.percentage|floatformat:1 }}%</small>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-data">
+                <p>📚 No marks added yet. Please contact your teacher to get started!</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Achievements -->
+    <div class="achievements-section">
+        <h3 class="section-title">🏆 Achievements & Badges</h3>
+        <div class="achievements-grid">
+            {% if overall_average >= 80 %}
+            <div class="achievement">
+                <div class="achievement-icon">⭐</div>
+                <div class="achievement-name">Top Performer</div>
+            </div>
+            {% endif %}
+
+            {% if attendance_percentage >= 95 %}
+            <div class="achievement">
+                <div class="achievement-icon">🎯</div>
+                <div class="achievement-name">Perfect Attendance</div>
+            </div>
+            {% endif %}
+
+            {% if overall_average >= 85 %}
+            <div class="achievement">
+                <div class="achievement-icon">🚀</div>
+                <div class="achievement-name">Fast Learner</div>
+            </div>
+            {% endif %}
+
+            {% if overall_average >= 75 %}
+            <div class="achievement">
+                <div class="achievement-icon">💡</div>
+                <div class="achievement-name">Consistent Performer</div>
+            </div>
+            {% endif %}
+
+            <div class="achievement">
+                <div class="achievement-icon">📈</div>
+                <div class="achievement-name">Growing Skills</div>
+            </div>
+
+            <div class="achievement">
+                <div class="achievement-icon">🌟</div>
+                <div class="achievement-name">Active Learner</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Suggestions -->
+    <div class="suggestions-section">
+        <h3 class="section-title">💡 Personalized Suggestions</h3>
+
+        {% if attendance_percentage < 75 %}
+        <div class="suggestion-item">
+            <div class="suggestion-title">⚠️ Improve Your Attendance</div>
+            <div class="suggestion-text">Your attendance is {{ attendance_percentage|floatformat:1 }}%. Attendance below 75% may affect your overall performance. Try to attend all classes regularly.</div>
+        </div>
+        {% endif %}
+
+        {% if overall_average < 60 %}
+        <div class="suggestion-item">
+            <div class="suggestion-title">📌 Focus on Your Studies</div>
+            <div class="suggestion-text">Your current average is {{ overall_average|floatformat:1 }}%. Consider dedicating more time to your subjects and seeking help from your teachers.</div>
+        </div>
+        {% elif overall_average < 75 %}
+        <div class="suggestion-item">
+            <div class="suggestion-title">📌 Aim for Better Grades</div>
+            <div class="suggestion-text">Your average is {{ overall_average|floatformat:1 }}%. With a bit more effort, you can push this higher. Focus on the subjects where you're struggling most.</div>
+        </div>
+        {% else %}
+        <div class="suggestion-item">
+            <div class="suggestion-title">✅ Keep Up the Good Work!</div>
+            <div class="suggestion-text">Your overall performance ({{ overall_average|floatformat:1 }}%) is excellent! Consistency is key to continued success. Keep maintaining this level of performance.</div>
+        </div>
+        {% endif %}
+
+        {% if overall_average >= 80 and attendance_percentage >= 90 %}
+        <div class="suggestion-item">
+            <div class="suggestion-title">🎯 You're on Track!</div>
+            <div class="suggestion-text">Excellent work! Both your grades and attendance are strong. Continue this momentum and you'll achieve great results.</div>
+        </div>
+        {% endif %}
+
+        <div class="suggestion-item">
+            <div class="suggestion-title">🌱 Next Steps</div>
+            <div class="suggestion-text">Review your weak areas, practice regularly, and don't hesitate to ask teachers for clarification. Regular effort compounds to excellent results!</div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
