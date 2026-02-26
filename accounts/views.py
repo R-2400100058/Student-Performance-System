@@ -94,6 +94,54 @@ def manage_students(request):
 
 
 @login_required(login_url='login')
+def teacher_marks(request):
+    """Teacher marks management interface"""
+    return render(request, 'accounts/teacher_marks.html')
+
+
+@login_required(login_url='login')
+def add_student(request):
+    """Add a new student"""
+    if request.method == "POST":
+        name = request.POST.get('name')
+        roll_no = request.POST.get('roll_no')
+        department = request.POST.get('department')
+
+        if not name or not roll_no or not department:
+            messages.error(request, "All fields are required")
+            return redirect('teacher_dashboard')
+
+        Student.objects.create(
+            name=name,
+            roll_no=roll_no,
+            department=department
+        )
+        messages.success(request, f"Student {name} added successfully")
+    
+    return redirect('teacher_dashboard')
+
+
+@login_required(login_url='login')
+def delete_student(request, student_id):
+    """Delete a student"""
+    try:
+        student = Student.objects.get(id=student_id)
+        student_name = student.name
+        
+        # Delete associated marks
+        from analytics_app.models import Mark
+        Mark.objects.filter(student=student).delete()
+        
+        # Delete student
+        student.delete()
+        messages.success(request, f"Student {student_name} deleted successfully")
+    except Student.DoesNotExist:
+        messages.error(request, "Student not found")
+    
+    return redirect('teacher_dashboard')
+
+
+@login_required(login_url='login')
 def teacher_dashboard(request):
     from analytics_app.models import Mark, Subject, Student
     from django.db.models import Avg, Count
@@ -115,32 +163,75 @@ def teacher_dashboard(request):
                 'total_marks': subject_marks.count(),
             })
 
-    # Get top students
-    top_students = []
-    student_data = {}
+    # Get detailed student data with attendance and marks
+    student_data_dict = {}
     for mark in all_marks:
         student_id = mark.student.id
-        if student_id not in student_data:
-            student_data[student_id] = {'marks': [], 'name': mark.student.name}
-        student_data[student_id]['marks'].append(mark.marks_obtained)
+        if student_id not in student_data_dict:
+            student_data_dict[student_id] = {
+                'name': mark.student.name,
+                'roll_no': mark.student.roll_no,
+                'department': mark.student.department,
+                'marks': [],
+                'attendance': [],
+            }
+        student_data_dict[student_id]['marks'].append(mark.marks_obtained)
+        student_data_dict[student_id]['attendance'].append(mark.attendance_percentage)
 
-    for student_id, data in student_data.items():
-        avg = sum(data['marks']) / len(data['marks'])
-        top_students.append({'name': data['name'], 'average': round(avg, 2)})
+    # Build comprehensive student list
+    students_list = []
+    for student_id, data in student_data_dict.items():
+        avg_marks = sum(data['marks']) / len(data['marks']) if data['marks'] else 0
+        avg_attendance = sum(data['attendance']) / len(data['attendance']) if data['attendance'] else 0
+        is_failing = avg_marks < 40  # Less than 40 is failing
+        
+        students_list.append({
+            'id': student_id,
+            'name': data['name'],
+            'roll_no': data['roll_no'],
+            'department': data['department'],
+            'average_marks': round(avg_marks, 2),
+            'attendance': round(avg_attendance, 2),
+            'is_failing': is_failing,
+            'total_marks_records': len(data['marks']),
+        })
 
-    top_students.sort(key=lambda x: x['average'], reverse=True)
-    top_students = top_students[:5]
+    # Get sorting parameter
+    sort_by = request.GET.get('sort', 'name')
+    if sort_by == 'marks_desc':
+        students_list.sort(key=lambda x: x['average_marks'], reverse=True)
+    elif sort_by == 'marks_asc':
+        students_list.sort(key=lambda x: x['average_marks'])
+    elif sort_by == 'attendance_desc':
+        students_list.sort(key=lambda x: x['attendance'], reverse=True)
+    elif sort_by == 'attendance_asc':
+        students_list.sort(key=lambda x: x['attendance'])
+    elif sort_by == 'failing':
+        students_list.sort(key=lambda x: (not x['is_failing'], x['average_marks']))
+    else:
+        students_list.sort(key=lambda x: x['name'])
+
+    # Get top students
+    top_students = sorted(students_list, key=lambda x: x['average_marks'], reverse=True)[:5]
+
+    # Get failing students
+    failing_students = [s for s in students_list if s['is_failing']]
 
     # Overall stats
     overall_class_avg = all_marks.aggregate(Avg('marks_obtained'))['marks_obtained__avg'] or 0
     total_students_count = all_marks.values('student').distinct().count()
+    failing_count = len(failing_students)
 
     context = {
         'class_stats': class_stats,
+        'students_list': students_list,
         'top_students': top_students,
+        'failing_students': failing_students,
         'overall_class_avg': round(overall_class_avg, 2),
         'total_students_count': total_students_count,
+        'failing_count': failing_count,
         'total_marks_count': all_marks.count(),
+        'sort_by': sort_by,
     }
 
     return render(request, 'accounts/teacher_dashboard.html', context)

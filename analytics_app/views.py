@@ -176,3 +176,124 @@ def subject_data(request):
         'labels': [s['name'] for s in subject_stats],
         'data': [s['average'] for s in subject_stats]
     })
+
+
+# ============ MARKS MANAGEMENT ENDPOINTS ============
+
+@require_http_methods(["GET"])
+def get_marks(request):
+    """Get all marks as JSON"""
+    marks = Mark.objects.all().select_related('student', 'subject')
+    marks_data = []
+    for mark in marks:
+        marks_data.append({
+            'id': mark.id,
+            'student_id': mark.student.id,
+            'student_name': mark.student.name,
+            'student_roll_no': mark.student.roll_no,
+            'subject_id': mark.subject.id,
+            'subject_name': mark.subject.subject_name,
+            'marks_obtained': mark.marks_obtained,
+            'attendance_percentage': mark.attendance_percentage
+        })
+    return JsonResponse(marks_data, safe=False)
+
+
+@require_http_methods(["POST"])
+def create_mark(request):
+    """Create a new mark entry"""
+    try:
+        data = json.loads(request.body)
+        student = get_object_or_404(Student, id=data.get('student_id'))
+        subject = get_object_or_404(Subject, id=data.get('subject_id'))
+        
+        mark = Mark.objects.create(
+            student=student,
+            subject=subject,
+            marks_obtained=data.get('marks_obtained'),
+            attendance_percentage=data.get('attendance_percentage')
+        )
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Mark created successfully',
+            'mark': {
+                'id': mark.id,
+                'student_id': mark.student.id,
+                'subject_id': mark.subject.id,
+                'marks_obtained': mark.marks_obtained,
+                'attendance_percentage': mark.attendance_percentage
+            }
+        })
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)
+
+
+@require_http_methods(["POST"])
+def update_mark(request, pk):
+    """Update a mark"""
+    try:
+        mark = get_object_or_404(Mark, id=pk)
+        data = json.loads(request.body)
+        
+        if 'marks_obtained' in data:
+            mark.marks_obtained = data.get('marks_obtained')
+        if 'attendance_percentage' in data:
+            mark.attendance_percentage = data.get('attendance_percentage')
+        
+        mark.save()
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Mark updated successfully',
+            'mark': {
+                'id': mark.id,
+                'marks_obtained': mark.marks_obtained,
+                'attendance_percentage': mark.attendance_percentage
+            }
+        })
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)
+
+
+@require_http_methods(["POST", "DELETE"])
+def delete_mark(request, pk):
+    """Delete a mark"""
+    try:
+        mark = get_object_or_404(Mark, id=pk)
+        mark.delete()
+        return JsonResponse({
+            'success': True,
+            'message': 'Mark deleted successfully'
+        })
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)
+
+
+# ============ SUBJECT MANAGEMENT ENDPOINTS ============
+
+@require_http_methods(["GET"])
+def get_subjects(request):
+    """Get all subjects as JSON"""
+    subjects = Subject.objects.all().values('id', 'subject_name')
+    return JsonResponse(list(subjects), safe=False)
+
+
+@require_http_methods(["POST"])
+def create_subject(request):
+    """Create a new subject"""
+    try:
+        data = json.loads(request.body)
+        subject = Subject.objects.create(
+            subject_name=data.get('subject_name')
+        )
+        return JsonResponse({
+            'success': True,
+            'message': 'Subject created successfully',
+            'subject': {
+                'id': subject.id,
+                'subject_name': subject.subject_name
+            }
+        })
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)

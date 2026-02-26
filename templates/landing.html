@@ -3,9 +3,193 @@
 {% block title %}Home - Student Performance Analysis System{% endblock %}
 
 {% block content %}
-<div class="container-fluid p-0" style="background-color: var(--primary-bg);">
+<div class="container-fluid p-0" style="background-color: var(--primary-bg); position: relative; overflow: hidden;">
+    <!-- Background Decorative Elements -->
+    <div class="background-clipart">
+        <!-- Student Figure Left -->
+        <svg class="clipart-figure student-left" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="25" r="15" fill="#FF6B9D"/>
+            <rect x="35" y="45" width="30" height="35" rx="5" fill="#4A90E2"/>
+            <rect x="25" y="80" width="15" height="30" fill="#F5A623"/>
+            <rect x="60" y="80" width="15" height="30" fill="#F5A623"/>
+            <circle cx="32" cy="85" r="4" fill="#F5A623"/>
+            <circle cx="68" cy="85" r="4" fill="#F5A623"/>
+        </svg>
+
+        <!-- Teacher Figure Center -->
+        <svg class="clipart-figure teacher-center" viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="25" r="16" fill="#FDB833"/>
+            <rect x="32" y="45" width="36" height="40" rx="3" fill="#E67E22"/>
+            <rect x="20" y="85" width="18" height="40" fill="#2C3E50"/>
+            <rect x="62" y="85" width="18" height="40" fill="#2C3E50"/>
+            <rect x="30" y="42" width="8" height="35" fill="#FFD4A3"/>
+            <rect x="62" y="42" width="8" height="35" fill="#FFD4A3"/>
+            <rect x="48" y="35" width="4" height="15" fill="#FFD4A3"/>
+        </svg>
+
+        <!-- Student Figure Right -->
+        <svg class="clipart-figure student-right" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="25" r="15" fill="#50C878"/>
+            <rect x="35" y="45" width="30" height="35" rx="5" fill="#9B59B6"/>
+            <rect x="25" y="80" width="15" height="30" fill="#3498DB"/>
+            <rect x="60" y="80" width="15" height="30" fill="#3498DB"/>
+            <circle cx="32" cy="85" r="4" fill="#3498DB"/>
+            <circle cx="68" cy="85" r="4" fill="#3498DB"/>
+        </svg>
+
+        <!-- Floating Books -->
+        <svg class="clipart-book book-1" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="50" height="30" rx="2" fill="#E74C3C"/>
+            <line x1="30" y1="5" x2="30" y2="35" stroke="#C0392B" stroke-width="1"/>
+            <circle cx="15" cy="20" r="3" fill="#ECF0F1"/>
+            <circle cx="35" cy="15" r="2" fill="#ECF0F1"/>
+        </svg>
+
+        <!-- Floating Books 2 -->
+        <svg class="clipart-book book-2" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="50" height="30" rx="2" fill="#3498DB"/>
+            <line x1="30" y1="5" x2="30" y2="35" stroke="#2980B9" stroke-width="1"/>
+            <circle cx="15" cy="20" r="3" fill="#ECF0F1"/>
+            <circle cx="35" cy="15" r="2" fill="#ECF0F1"/>
+        </svg>
+
+        <!-- Pen -->
+        <svg class="clipart-pen pen-1" viewBox="0 0 80 20" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="8" width="60" height="4" rx="2" fill="#2C3E50"/>
+            <circle cx="68" cy="10" r="4" fill="#E74C3C"/>
+            <polygon points="5,10 10,8 10,12" fill="#E74C3C"/>
+        </svg>
+
+        <!-- Pencil -->
+        <svg class="clipart-pencil pencil-1" viewBox="0 0 80 20" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="8" width="55" height="4" rx="2" fill="#F5A623"/>
+            <polygon points="60,8 70,10 60,12" fill="#2C3E50"/>
+            <polygon points="5,10 10,8 10,12" fill="#E8A35D"/>
+        </svg>
+
+        <!-- Notebook/Stack of Pages -->
+        <svg class="clipart-notebook notebook-1" viewBox="0 0 50 60" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="40" height="50" rx="2" fill="#9B59B6"/>
+            <line x1="8" y1="15" x2="45" y2="15" stroke="#ECF0F1" stroke-width="1"/>
+            <line x1="8" y1="25" x2="45" y2="25" stroke="#ECF0F1" stroke-width="1"/>
+            <line x1="8" y1="35" x2="45" y2="35" stroke="#ECF0F1" stroke-width="1"/>
+            <line x1="8" y1="45" x2="40" y2="45" stroke="#ECF0F1" stroke-width="1"/>
+        </svg>
+
+        <!-- Ruler -->
+        <svg class="clipart-ruler ruler-1" viewBox="0 0 100 15" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="90" height="5" rx="2" fill="#3498DB"/>
+            <line x1="15" y1="3" x2="15" y2="12" stroke="#ECF0F1" stroke-width="1"/>
+            <line x1="25" y1="3" x2="25" y2="12" stroke="#ECF0F1" stroke-width="1"/>
+            <line x1="35" y1="3" x2="35" y2="12" stroke="#ECF0F1" stroke-width="1"/>
+            <line x1="45" y1="3" x2="45" y2="12" stroke="#ECF0F1" stroke-width="1"/>
+            <line x1="55" y1="3" x2="55" y2="12" stroke="#ECF0F1" stroke-width="1"/>
+            <line x1="65" y1="3" x2="65" y2="12" stroke="#ECF0F1" stroke-width="1"/>
+            <line x1="75" y1="3" x2="75" y2="12" stroke="#ECF0F1" stroke-width="1"/>
+            <line x1="85" y1="3" x2="85" y2="12" stroke="#ECF0F1" stroke-width="1"/>
+        </svg>
+
+        <!-- Eraser -->
+        <svg class="clipart-eraser eraser-1" viewBox="0 0 40 30" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="8" width="30" height="14" rx="2" fill="#FFB6C1"/>
+            <rect x="5" y="22" width="30" height="4" fill="#2C3E50"/>
+        </svg>
+
+        <!-- Calculator/Device -->
+        <svg class="clipart-device device-1" viewBox="0 0 50 60" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="40" height="50" rx="3" fill="#34495E"/>
+            <rect x="8" y="8" width="34" height="25" fill="#ECF0F1"/>
+            <circle cx="20" cy="45" r="2" fill="#F5A623"/>
+            <circle cx="30" cy="45" r="2" fill="#F5A623"/>
+            <rect x="15" y="50" width="20" height="3" fill="#F5A623"/>
+        </svg>
+
+        <!-- Apple/Knowledge -->
+        <svg class="clipart-apple apple-1" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="22" r="15" fill="#E74C3C"/>
+            <rect x="19" y="5" width="2" height="12" fill="#27AE60"/>
+            <ellipse cx="25" cy="8" rx="3" ry="4" fill="#27AE60"/>
+        </svg>
+
+        <!-- Calculator -->
+        <svg class="clipart-calculator calculator-1" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="50" height="70" rx="3" fill="#2C3E50"/>
+            <rect x="8" y="8" width="44" height="20" fill="#ECF0F1"/>
+            <text x="30" y="22" text-anchor="middle" fill="#2C3E50" font-size="12" font-weight="bold">123</text>
+            <g>
+                <rect x="10" y="32" width="10" height="8" fill="#95A5A6"/>
+                <rect x="22" y="32" width="10" height="8" fill="#95A5A6"/>
+                <rect x="34" y="32" width="10" height="8" fill="#95A5A6"/>
+                <rect x="46" y="32" width="8" height="8" fill="#E67E22"/>
+            </g>
+            <g>
+                <rect x="10" y="42" width="10" height="8" fill="#95A5A6"/>
+                <rect x="22" y="42" width="10" height="8" fill="#95A5A6"/>
+                <rect x="34" y="42" width="10" height="8" fill="#95A5A6"/>
+                <rect x="46" y="42" width="8" height="8" fill="#E67E22"/>
+            </g>
+            <g>
+                <rect x="10" y="52" width="10" height="8" fill="#95A5A6"/>
+                <rect x="22" y="52" width="10" height="8" fill="#95A5A6"/>
+                <rect x="34" y="52" width="10" height="8" fill="#95A5A6"/>
+                <rect x="46" y="52" width="8" height="8" fill="#E67E22"/>
+            </g>
+            <rect x="10" y="62" width="44" height="8" fill="#3498DB"/>
+        </svg>
+
+        <!-- Student Study Figure -->
+        <svg class="clipart-student-study student-study-1" viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="25" r="14" fill="#FFD4A3"/>
+            <rect x="32" y="42" width="36" height="38" rx="4" fill="#27AE60"/>
+            <rect x="20" y="85" width="16" height="35" fill="#2C3E50"/>
+            <rect x="64" y="85" width="16" height="35" fill="#2C3E50"/>
+            <circle cx="28" cy="47" r="6" fill="#3498DB"/>
+            <circle cx="72" cy="47" r="6" fill="#3498DB"/>
+        </svg>
+
+        <!-- Pile of Books -->
+        <svg class="clipart-books-pile books-pile-1" viewBox="0 0 70 80" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="50" width="60" height="25" rx="2" fill="#E74C3C"/>
+            <line x1="35" y1="50" x2="35" y2="75" stroke="#C0392B" stroke-width="1"/>
+            <rect x="8" y="35" width="58" height="20" rx="2" fill="#3498DB"/>
+            <line x1="37" y1="35" x2="37" y2="55" stroke="#2980B9" stroke-width="1"/>
+            <rect x="10" y="20" width="56" height="18" rx="2" fill="#9B59B6"/>
+            <line x1="38" y1="20" x2="38" y2="38" stroke="#8E44AD" stroke-width="1"/>
+            <rect x="12" y="8" width="54" height="15" rx="2" fill="#F39C12"/>
+            <line x1="39" y1="8" x2="39" y2="23" stroke="#E67E22" stroke-width="1"/>
+        </svg>
+
+        <!-- Smart Board/Interactive Display -->
+        <svg class="clipart-smartboard smartboard-1" viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="45" rx="3" fill="#2C3E50"/>
+            <rect x="8" y="8" width="64" height="39" fill="#34495E"/>
+            <circle cx="25" cy="25" r="8" fill="#3498DB" opacity="0.6"/>
+            <circle cx="45" cy="20" r="6" fill="#E74C3C" opacity="0.6"/>
+            <rect x="60" y="28" width="10" height="12" fill="#F5A623" opacity="0.6"/>
+            <rect x="10" y="50" width="60" height="6" fill="#7F8C8D"/>
+            <circle cx="20" cy="53" r="2" fill="#2C3E50"/>
+            <circle cx="40" cy="53" r="2" fill="#2C3E50"/>
+            <circle cx="60" cy="53" r="2" fill="#2C3E50"/>
+        </svg>
+
+        <!-- Projector -->
+        <svg class="clipart-projector projector-1" viewBox="0 0 70 50" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="15" width="60" height="20" rx="3" fill="#34495E"/>
+            <circle cx="20" cy="25" r="8" fill="#2C3E50"/>
+            <circle cx="35" cy="25" r="8" fill="#2C3E50"/>
+            <circle cx="50" cy="25" r="8" fill="#2C3E50"/>
+            <circle cx="20" cy="25" r="5" fill="#3498DB"/>
+            <circle cx="35" cy="25" r="5" fill="#3498DB"/>
+            <circle cx="50" cy="25" r="5" fill="#3498DB"/>
+            <rect x="8" y="37" width="15" height="8" fill="#95A5A6"/>
+            <rect x="27" y="37" width="15" height="8" fill="#95A5A6"/>
+            <rect x="46" y="37" width="15" height="8" fill="#95A5A6"/>
+            <polygon points="10,10 60,10 58,5 12,5" fill="#7F8C8D"/>
+        </svg>
+    </div>
+
     <!-- Hero Section -->
-    <div class="container py-5">
+    <div class="container py-5" style="position: relative; z-index: 2;">
         <div class="hero-section fade-in-up">
             <h1>Student Performance Analysis System</h1>
             <p>Unlock insights into student performance with advanced analytics and real-time reporting</p>
@@ -69,10 +253,282 @@
         </div>
     </div>
 </div>
+</div>
 
 <style>
     .fade-in-up {
         animation: fadeInUp 0.6s ease-out;
+    }
+
+    /* Background Clipart Styles */
+    .background-clipart {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    .clipart-figure {
+        position: absolute;
+        opacity: 0.26;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .student-left {
+        width: 200px;
+        height: 240px;
+        top: 5%;
+        left: -50px;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .teacher-center {
+        width: 220px;
+        height: 280px;
+        top: -30px;
+        right: 5%;
+        animation: float 7s ease-in-out infinite 1s;
+    }
+
+    .student-right {
+        width: 180px;
+        height: 216px;
+        bottom: 2%;
+        left: 10%;
+        animation: float 6.5s ease-in-out infinite 0.5s;
+    }
+
+    .clipart-book {
+        position: absolute;
+        opacity: 0.17;
+    }
+
+    .book-1 {
+        width: 80px;
+        height: 60px;
+        top: 25%;
+        right: 8%;
+        animation: float 5s ease-in-out infinite;
+        transform: rotate(-15deg);
+    }
+
+    .book-2 {
+        width: 75px;
+        height: 55px;
+        bottom: 20%;
+        right: 2%;
+        animation: float 5.5s ease-in-out infinite 0.7s;
+        transform: rotate(20deg);
+    }
+
+    /* Pen Styles */
+    .clipart-pen {
+        position: absolute;
+        opacity: 0.17;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    }
+
+    .pen-1 {
+        width: 90px;
+        height: 25px;
+        top: 15%;
+        left: 5%;
+        animation: float 5.2s ease-in-out infinite 0.3s;
+        transform: rotate(-25deg);
+    }
+
+    /* Pencil Styles */
+    .clipart-pencil {
+        position: absolute;
+        opacity: 0.17;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    }
+
+    .pencil-1 {
+        width: 85px;
+        height: 22px;
+        top: 40%;
+        left: 2%;
+        animation: float 6s ease-in-out infinite 0.5s;
+        transform: rotate(35deg);
+    }
+
+    /* Notebook Styles */
+    .clipart-notebook {
+        position: absolute;
+        opacity: 0.17;
+        filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
+    }
+
+    .notebook-1 {
+        width: 70px;
+        height: 85px;
+        bottom: 15%;
+        right: 12%;
+        animation: float 5.8s ease-in-out infinite 0.8s;
+        transform: rotate(10deg);
+    }
+
+    /* Ruler Styles */
+    .clipart-ruler {
+        position: absolute;
+        opacity: 0.17;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    }
+
+    .ruler-1 {
+        width: 110px;
+        height: 18px;
+        top: 50%;
+        right: 15%;
+        animation: float 5.3s ease-in-out infinite 0.2s;
+        transform: rotate(15deg);
+    }
+
+    /* Eraser Styles */
+    .clipart-eraser {
+        position: absolute;
+        opacity: 0.17;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    }
+
+    .eraser-1 {
+        width: 50px;
+        height: 38px;
+        bottom: 35%;
+        left: 8%;
+        animation: float 5.7s ease-in-out infinite 0.6s;
+        transform: rotate(-20deg);
+    }
+
+    /* Device/Calculator Styles */
+    .clipart-device {
+        position: absolute;
+        opacity: 0.17;
+        filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
+    }
+
+    .device-1 {
+        width: 60px;
+        height: 75px;
+        top: 60%;
+        left: 15%;
+        animation: float 6.2s ease-in-out infinite 0.4s;
+        transform: rotate(5deg);
+    }
+
+    /* Apple/Knowledge Styles */
+    .clipart-apple {
+        position: absolute;
+        opacity: 0.17;
+        filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
+    }
+
+    .apple-1 {
+        width: 55px;
+        height: 55px;
+        bottom: 25%;
+        right: 5%;
+        animation: float 5.5s ease-in-out infinite 0.9s;
+    }
+
+    /* Calculator Styles */
+    .clipart-calculator {
+        position: absolute;
+        opacity: 0.17;
+        filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
+    }
+
+    .calculator-1 {
+        width: 70px;
+        height: 95px;
+        top: 30%;
+        right: 20%;
+        animation: float 5.6s ease-in-out infinite 0.3s;
+        transform: rotate(-10deg);
+    }
+
+    /* Student Study Figure Styles */
+    .clipart-student-study {
+        position: absolute;
+        opacity: 0.26;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .student-study-1 {
+        width: 100px;
+        height: 140px;
+        bottom: 5%;
+        right: 25%;
+        animation: float 6.3s ease-in-out infinite 0.6s;
+    }
+
+    /* Pile of Books Styles */
+    .clipart-books-pile {
+        position: absolute;
+        opacity: 0.17;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .books-pile-1 {
+        width: 85px;
+        height: 95px;
+        top: 45%;
+        left: 20%;
+        animation: float 6.1s ease-in-out infinite 0.7s;
+        transform: rotate(8deg);
+    }
+
+    /* Smart Board Styles */
+    .clipart-smartboard {
+        position: absolute;
+        opacity: 0.17;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .smartboard-1 {
+        width: 95px;
+        height: 75px;
+        top: 20%;
+        right: 35%;
+        animation: float 5.9s ease-in-out infinite 0.4s;
+        transform: rotate(-5deg);
+    }
+
+    /* Projector Styles */
+    .clipart-projector {
+        position: absolute;
+        opacity: 0.17;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .projector-1 {
+        width: 85px;
+        height: 65px;
+        bottom: 30%;
+        right: 8%;
+        animation: float 5.4s ease-in-out infinite 1s;
+        transform: rotate(12deg);
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(20px);
+        }
+    }
+
+    .book-1 {
+        animation: float 5s ease-in-out infinite;
+    }
+
+    .book-2 {
+        animation: float 5.5s ease-in-out infinite 0.7s;
     }
 
     @media (max-width: 768px) {
@@ -87,6 +543,45 @@
         .btn-primary-custom {
             display: block;
             margin-bottom: 1rem;
+        }
+
+        .clipart-figure {
+            opacity: 0.13 !important;
+        }
+
+        .clipart-book,
+        .clipart-pen,
+        .clipart-pencil,
+        .clipart-notebook,
+        .clipart-ruler,
+        .clipart-eraser,
+        .clipart-device,
+        .clipart-apple,
+        .clipart-calculator,
+        .clipart-student-study,
+        .clipart-books-pile,
+        .clipart-smartboard,
+        .clipart-projector {
+            opacity: 0.09 !important;
+        }
+
+        .student-left {
+            width: 120px;
+            height: 144px;
+            left: -80px;
+        }
+
+        .teacher-center {
+            width: 140px;
+            height: 180px;
+            right: 0;
+            top: 10%;
+        }
+
+        .student-right {
+            width: 110px;
+            height: 132px;
+            display: none;
         }
     }
 </style>

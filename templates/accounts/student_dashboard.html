@@ -5,20 +5,20 @@
 {% block content %}
 <style>
     .dashboard-header {
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        background: linear-gradient(135deg, var(--secondary-bg) 0%, var(--primary-bg) 100%);
         padding: 2rem 0;
         margin-bottom: 2rem;
-        border-bottom: 1px solid #475569;
+        border-bottom: 1px solid var(--border-color);
     }
 
     .dashboard-header h1 {
-        color: #f1f5f9;
+        color: var(--text-primary);
         font-size: 2.5rem;
         margin-bottom: 0.5rem;
     }
 
     .dashboard-header p {
-        color: #cbd5e1;
+        color: var(--text-secondary);
         font-size: 1rem;
     }
 
@@ -30,8 +30,8 @@
     }
 
     .stat-box {
-        background: linear-gradient(135deg, #1e293b 0%, rgba(59, 130, 246, 0.1) 100%);
-        border: 1px solid #475569;
+        background: linear-gradient(135deg, var(--secondary-bg) 0%, rgba(0, 151, 167, 0.05) 100%);
+        border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 1.5rem;
         text-align: center;
@@ -40,12 +40,12 @@
 
     .stat-box:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
-        border-color: #3b82f6;
+        box-shadow: var(--shadow);
+        border-color: var(--accent-blue);
     }
 
     .stat-label {
-        color: #cbd5e1;
+        color: var(--text-secondary);
         font-size: 0.85rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
@@ -54,21 +54,21 @@
     }
 
     .stat-value {
-        color: #3b82f6;
+        color: var(--accent-blue);
         font-size: 2.5rem;
         font-weight: 700;
     }
 
     .subject-cards {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 1.5rem;
         margin-bottom: 2rem;
     }
 
     .subject-card {
-        background: #1e293b;
-        border: 1px solid #475569;
+        background: var(--secondary-bg);
+        border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 1.5rem;
         transition: all 0.3s ease;
@@ -77,9 +77,9 @@
 
     .subject-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
-        border-color: #3b82f6;
-        background: #334155;
+        box-shadow: var(--shadow);
+        border-color: var(--accent-blue);
+        background: var(--tertiary-bg);
     }
 
     .subject-header {
@@ -90,13 +90,13 @@
     }
 
     .subject-name {
-        color: #f1f5f9;
+        color: var(--text-primary);
         font-weight: 600;
         font-size: 1.1rem;
     }
 
     .subject-score {
-        color: #10b981;
+        color: var(--accent-green);
         font-weight: 700;
         font-size: 1.5rem;
     }
@@ -104,7 +104,7 @@
     .progress-bar {
         width: 100%;
         height: 8px;
-        background: #475569;
+        background: var(--border-color);
         border-radius: 4px;
         overflow: hidden;
         margin-bottom: 0.75rem;
@@ -112,17 +112,17 @@
 
     .progress-fill {
         height: 100%;
-        background: linear-gradient(90deg, #3b82f6, #10b981);
+        background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
         border-radius: 4px;
     }
 
     .progress-label {
-        color: #cbd5e1;
+        color: var(--text-secondary);
         font-size: 0.85rem;
     }
 
     .section-title {
-        color: #f1f5f9;
+        color: var(--text-primary);
         font-size: 1.5rem;
         margin-bottom: 1.5rem;
         font-weight: 600;
@@ -130,10 +130,16 @@
     }
 
     .card-section {
-        background: #1e293b;
+        background: var(--secondary-bg);
         border-radius: 12px;
-        border: 1px solid #475569;
+        border: 1px solid var(--border-color);
         padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .chart-wrapper {
+        position: relative;
+        height: 400px;
         margin-bottom: 2rem;
     }
 
@@ -146,16 +152,17 @@
     .achievement {
         text-align: center;
         padding: 1.5rem;
-        background: #334155;
+        background: var(--tertiary-bg);
         border-radius: 10px;
-        border: 1px solid #475569;
+        border: 1px solid var(--border-color);
         transition: all 0.3s ease;
     }
 
     .achievement:hover {
         transform: scale(1.05);
-        background: #475569;
-        color: #10b981;
+        background: var(--secondary-bg);
+        color: var(--accent-green);
+        border-color: var(--accent-blue);
     }
 
     .achievement-icon {
@@ -164,27 +171,27 @@
     }
 
     .achievement-name {
-        color: #e2e8f0;
+        color: var(--text-primary);
         font-weight: 600;
         font-size: 0.9rem;
     }
 
     .suggestion-item {
         padding: 1.2rem;
-        background: #334155;
-        border-left: 4px solid #3b82f6;
+        background: var(--tertiary-bg);
+        border-left: 4px solid var(--accent-blue);
         border-radius: 10px;
         margin-bottom: 1rem;
     }
 
     .suggestion-title {
         font-weight: 700;
-        color: #f1f5f9;
+        color: var(--text-primary);
         margin-bottom: 0.4rem;
     }
 
     .suggestion-text {
-        color: #cbd5e1;
+        color: var(--text-secondary);
         font-size: 0.9rem;
         line-height: 1.5;
     }
@@ -192,7 +199,7 @@
     .empty-state {
         text-align: center;
         padding: 3rem 1rem;
-        color: #cbd5e1;
+        color: var(--text-secondary);
     }
 
     .empty-state-icon {
@@ -203,6 +210,14 @@
     .container-xl {
         max-width: 1200px;
     }
+
+    .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
 </style>
 
 <div class="dashboard-header">
@@ -254,6 +269,44 @@
     <div class="empty-state">
         <div class="empty-state-icon">📚</div>
         <p>No marks recorded yet. Please contact your teacher to get started!</p>
+    </div>
+    {% endif %}
+
+    <!-- Performance Charts -->
+    {% if subject_performance %}
+    <h2 class="section-title">Performance Analysis</h2>
+    <div class="charts-grid">
+        <!-- Subject Comparison Chart -->
+        <div class="card-section">
+            <h3 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.2rem;">Subject Comparison</h3>
+            <div class="chart-wrapper">
+                <canvas id="subjectChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Performance Trend Chart -->
+        <div class="card-section">
+            <h3 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.2rem;">Performance Trend</h3>
+            <div class="chart-wrapper">
+                <canvas id="trendChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Attendance Chart -->
+        <div class="card-section">
+            <h3 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.2rem;">Attendance Status</h3>
+            <div class="chart-wrapper">
+                <canvas id="attendanceChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Grade Distribution -->
+        <div class="card-section">
+            <h3 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.2rem;">Grade Distribution</h3>
+            <div class="chart-wrapper">
+                <canvas id="gradeChart"></canvas>
+            </div>
+        </div>
     </div>
     {% endif %}
 
@@ -334,5 +387,262 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Chart color configuration
+    const chartConfig = {
+        darkTheme: {
+            primary: '#3b82f6',
+            secondary: '#10b981',
+            tertiary: '#f59e0b',
+            background: 'rgba(59, 130, 246, 0.1)',
+            gridColor: '#475569',
+            textColor: '#cbd5e1'
+        },
+        lightTheme: {
+            primary: '#0097a7',
+            secondary: '#00897b',
+            tertiary: '#00838f',
+            background: 'rgba(0, 151, 167, 0.1)',
+            gridColor: '#b2ebf2',
+            textColor: '#004d5c'
+        }
+    };
+
+    function getThemeConfig() {
+        const isDarkTheme = !document.documentElement.classList.contains('light-theme');
+        return isDarkTheme ? chartConfig.darkTheme : chartConfig.lightTheme;
+    }
+
+    function createSubjectChart() {
+        const ctx = document.getElementById('subjectChart');
+        if (!ctx) return;
+        
+        const theme = getThemeConfig();
+        const subjects = {{ subject_performance|safe }};
+        
+        const labels = subjects.map(s => s.name);
+        const data = subjects.map(s => s.average);
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Average Marks',
+                    data: data,
+                    backgroundColor: theme.primary,
+                    borderColor: theme.primary,
+                    borderRadius: 8,
+                    borderWidth: 1,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: theme.textColor,
+                            font: { size: 12, weight: 'bold' }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: { color: theme.gridColor },
+                        ticks: { color: theme.textColor }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: theme.textColor }
+                    }
+                }
+            }
+        });
+    }
+
+    function createTrendChart() {
+        const ctx = document.getElementById('trendChart');
+        if (!ctx) return;
+        
+        const theme = getThemeConfig();
+        const subjects = {{ subject_performance|safe }};
+        
+        // Simulate performance trend data
+        const trendData = [65, 68, 72, 75, 78, (subjects.length > 0 ? subjects[0].average : 80)];
+        const weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'];
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: weeks,
+                datasets: [{
+                    label: 'Your Performance',
+                    data: trendData,
+                    borderColor: theme.primary,
+                    backgroundColor: theme.background,
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: theme.primary,
+                    pointBorderColor: theme.textColor,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: theme.textColor,
+                            font: { size: 12, weight: 'bold' }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: { color: theme.gridColor },
+                        ticks: { color: theme.textColor }
+                    },
+                    x: {
+                        grid: { color: theme.gridColor },
+                        ticks: { color: theme.textColor }
+                    }
+                }
+            }
+        });
+    }
+
+    function createAttendanceChart() {
+        const ctx = document.getElementById('attendanceChart');
+        if (!ctx) return;
+        
+        const theme = getThemeConfig();
+        const attendance = {{ attendance_percentage }};
+        const absent = 100 - attendance;
+
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Present', 'Absent'],
+                datasets: [{
+                    data: [attendance, absent],
+                    backgroundColor: [theme.secondary, theme.gridColor],
+                    borderColor: [theme.secondary, theme.gridColor],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: theme.textColor,
+                            font: { size: 12, weight: 'bold' }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function createGradeChart() {
+        const ctx = document.getElementById('gradeChart');
+        if (!ctx) return;
+        
+        const theme = getThemeConfig();
+        const subjects = {{ subject_performance|safe }};
+        
+        function getGradeCount(grade) {
+            return subjects.filter(s => {
+                const avg = s.average;
+                if (grade === 'A+') return avg >= 90;
+                if (grade === 'A') return avg >= 80 && avg < 90;
+                if (grade === 'B') return avg >= 70 && avg < 80;
+                if (grade === 'C') return avg >= 60 && avg < 70;
+                if (grade === 'D') return avg >= 50 && avg < 60;
+                return avg < 50;
+            }).length;
+        }
+
+        const grades = ['A+', 'A', 'B', 'C', 'D', 'F'];
+        const gradeCounts = grades.map(g => getGradeCount(g));
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: grades,
+                datasets: [{
+                    label: 'Subjects by Grade',
+                    data: gradeCounts,
+                    backgroundColor: theme.tertiary,
+                    borderColor: theme.tertiary,
+                    borderRadius: 8,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: theme.textColor,
+                            font: { size: 12, weight: 'bold' }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: { color: theme.gridColor },
+                        ticks: { color: theme.textColor }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: theme.textColor }
+                    }
+                }
+            }
+        });
+    }
+
+    // Initialize charts on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        createSubjectChart();
+        createTrendChart();
+        createAttendanceChart();
+        createGradeChart();
+    });
+
+    // Update charts when theme changes
+    const originalInitThemeToggle = window.initThemeToggle;
+    window.initThemeToggle = function() {
+        originalInitThemeToggle.call(window);
+        // Add chart update on theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', function() {
+                setTimeout(() => {
+                    location.reload();
+                }, 300);
+            });
+        }
+    };
+</script>
 
 {% endblock %}

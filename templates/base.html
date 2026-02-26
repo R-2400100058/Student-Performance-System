@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Student Performance Analysis System{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <style>
+        /* Dark Theme */
         :root {
             --primary-bg: #0f172a;
             --secondary-bg: #1e293b;
@@ -19,6 +21,25 @@
             --border-color: #475569;
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
+            --chart-bg: #1e293b;
+            --chart-grid: #334155;
+        }
+
+        /* Light Theme - Cyan Palette */
+        :root.light-theme {
+            --primary-bg: #f0f9fa;
+            --secondary-bg: #ffffff;
+            --tertiary-bg: #e0f2f1;
+            --accent-blue: #0097a7;
+            --accent-green: #00897b;
+            --accent-orange: #00838f;
+            --text-primary: #004d5c;
+            --text-secondary: #00838f;
+            --border-color: #b2ebf2;
+            --shadow: 0 10px 30px rgba(0, 151, 167, 0.15);
+            --shadow-sm: 0 4px 12px rgba(0, 151, 167, 0.1);
+            --chart-bg: #ffffff;
+            --chart-grid: #b2ebf2;
         }
 
         * {
@@ -500,6 +521,28 @@
             max-height: 100%;
         }
 
+        /* Theme Toggle Button */
+        .btn-theme-toggle {
+            background: none;
+            border: none;
+            color: var(--accent-blue) !important;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-theme-toggle:hover {
+            transform: scale(1.1) rotate(20deg);
+        }
+
+        .btn-theme-toggle i {
+            transition: transform 0.3s ease;
+        }
+
         /* Utility Classes */
         .text-muted-custom {
             color: var(--text-secondary);
@@ -592,7 +635,7 @@
                             <a class="nav-link {% if request.resolver_match.url_name == 'teacher_dashboard' %}active{% endif %}" href="{% url 'teacher_dashboard' %}">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'manage_students' %}active{% endif %}" href="{% url 'manage_students' %}">Students</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'teacher_marks' %}active{% endif %}" href="{% url 'teacher_marks' %}">Marks</a>
                         </li>
                         {% elif user.profile.role == 'student' %}
                         <li class="nav-item">
@@ -610,6 +653,11 @@
                             <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
                         </li>
                     {% endif %}
+                    <li class="nav-item">
+                        <button class="btn-theme-toggle nav-link" id="themeToggle" title="Toggle Dark/Light Theme">
+                            <i class="bi bi-moon-fill" id="themeIcon"></i>
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -627,6 +675,58 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Theme Toggle Functionality
+        function initThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            const htmlElement = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            // Get saved theme from localStorage or default to dark
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            
+            // Set initial theme
+            if (savedTheme === 'light') {
+                htmlElement.classList.add('light-theme');
+                themeIcon.classList.remove('bi-moon-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            }
+            
+            // Toggle theme on button click
+            themeToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                htmlElement.classList.toggle('light-theme');
+                
+                const isLightTheme = htmlElement.classList.contains('light-theme');
+                const theme = isLightTheme ? 'light' : 'dark';
+                
+                // Save theme preference
+                localStorage.setItem('theme', theme);
+                
+                // Update icon
+                if (isLightTheme) {
+                    themeIcon.classList.remove('bi-moon-fill');
+                    themeIcon.classList.add('bi-sun-fill');
+                } else {
+                    themeIcon.classList.remove('bi-sun-fill');
+                    themeIcon.classList.add('bi-moon-fill');
+                }
+                
+                // Update charts if they exist
+                updateChartsTheme();
+            });
+        }
+        
+        function updateChartsTheme() {
+            // This will be called when charts need to update for theme changes
+            if (window.location.pathname.includes('dashboard') || window.location.pathname.includes('student')) {
+                location.reload();
+            }
+        }
+        
+        // Initialize theme toggle on page load
+        document.addEventListener('DOMContentLoaded', initThemeToggle);
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
